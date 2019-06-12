@@ -178,6 +178,9 @@ class Player(wavelink.Player):
         if not track:
             return
 
+        if self.updating:
+            return
+
         self.updating = True
 
         embed = discord.Embed(title='Music Controller', colour=0xebb145)
@@ -252,6 +255,8 @@ class Player(wavelink.Player):
         await self.stop()
         await self.disconnect()
         await self.destroy_controller()
+
+        del self.node.players[self.guild_id]
 
 
 class Track(wavelink.Track):

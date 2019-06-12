@@ -20,6 +20,9 @@ class Bot(commands.Bot):
     async def on_ready(self):
         print(f'Logged in: {self.user.name} | {self.user.id}')
 
+        if not hasattr(self, 'appinfo'):
+            self.appinfo = await self.application_info()
+
     async def prepare(self):
         resolver = aiohttp.AsyncResolver(nameservers=['1.1.1.1', '1.0.0.1'])
         self.session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=0, resolver=resolver))
