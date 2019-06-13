@@ -35,12 +35,15 @@ class Music(commands.Cog):
             node.set_hook(self.event_hook)
 
     async def event_hook(self, event):
-        if event.player._current.repeats:
-            event.player._current.repeats -= 1
-            event.player.index -= 1
+        await self.do_next(event.player)
 
-        event.player.index += 1
-        await event.player._play_next()
+    async def do_next(self, player):
+        if player._current.repeats:
+            player._current.repeats -= 1
+            player.index -= 1
+
+        player.index += 1
+        await player._play_next()
 
     def get_player(self, *, ctx: commands.Context=None, member=None):
         if member:
@@ -174,7 +177,7 @@ class Music(commands.Cog):
             player.queue.append(plugins.Track(track.id, track.info, ctx=ctx))
 
         if not player.is_playing:
-            await player._play_next()
+            await self.do_next(player)
 
     @commands.command()
     async def pause(self, ctx: commands.Context):
@@ -329,6 +332,10 @@ class Music(commands.Cog):
         if self.is_privileged(ctx):
             await ctx.send(f'{ctx.author.mention} has repeated the song as an Admin or DJ.', delete_after=10)
             player.current.repeats += 1
+
+            if not player.is_playing:
+                await self.do_next(player)
+
             return
 
         if ctx.author in player.repeat_votes:
@@ -338,6 +345,9 @@ class Music(commands.Cog):
         if len(player.repeat_votes) >= self.required(ctx):
             await ctx.send('Vote to repeat the song passed. Now repeating the song.', delete_after=10)
             player.current.repeats += 1
+
+            if not player.is_playing:
+                await self.do_next(player)
             return
 
         await ctx.send(f'{ctx.author.mention} Your vote to repeat the song was received.')
