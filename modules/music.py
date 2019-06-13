@@ -178,7 +178,7 @@ class Music(commands.Cog):
 
         if not player.is_playing and not player._current:
             await player._play_next()
-        elif not player.is_playing:
+        elif not player.waiting:
             await self.do_next(player)
 
     @commands.command()
