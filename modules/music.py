@@ -415,7 +415,7 @@ class Music(commands.Cog):
             entries.append(entry)
 
         if not entries:
-            return await ctx.send('No more songs are queue!', delete_after=10)
+            return await ctx.send('No more songs are queued!', delete_after=10)
 
         pagey = buttons.Paginator(timeout=180, colour=0xebb145, length=10,
                                   title=f'Player Queue | Upcoming ({len(player.queue)}) songs.',

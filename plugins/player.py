@@ -222,16 +222,12 @@ class Player(wavelink.Player):
             except discord.NotFound:
                 pass
 
-            try:
-                await self.session.start(ctx=track.ctx, page=await track.ctx.send(embed=embed))
-            except Exception as e:
-                print(e)
+            await self.session.start(ctx=track.ctx, page=await track.ctx.send(embed=embed))
 
         elif not self.session.page:
             await self.session.start(ctx=track.ctx, page=await track.ctx.send(embed=embed))
         else:
-            self.updating = False
-            return await self.session.page.edit(embed=embed, content=None)
+            await self.session.page.edit(embed=embed, content=None)
 
         self.updating = False
 
@@ -246,11 +242,7 @@ class Player(wavelink.Player):
         return False
 
     async def destroy_controller(self):
-        try:
-            await self.session.cancel()
-        except Exception as e:
-            print(e)
-
+        await self.session.teardown()
         self.session.page = None
 
     async def teardown(self):
