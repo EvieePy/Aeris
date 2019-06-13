@@ -1,3 +1,4 @@
+import asyncio
 import discord
 import math
 import plugins
@@ -176,10 +177,10 @@ class Music(commands.Cog):
             await ctx.send(f'```ini\nAdded {track.title} to the Queue\n```', delete_after=15)
             player.queue.append(plugins.Track(track.id, track.info, ctx=ctx))
 
-        if not player.is_playing and not player._current:
+        await asyncio.sleep(1)
+
+        if not player.is_playing:
             await player._play_next()
-        elif not player.waiting:
-            await self.do_next(player)
 
     @commands.command()
     async def pause(self, ctx: commands.Context):
@@ -412,6 +413,9 @@ class Music(commands.Cog):
             entry = f'`{song.title}`'
 
             entries.append(entry)
+
+        if not entries:
+            return await ctx.send('No more songs are queue!', delete_after=10)
 
         pagey = buttons.Paginator(timeout=180, colour=0xebb145, length=10,
                                   title=f'Player Queue | Upcoming ({len(player.queue)}) songs.',
