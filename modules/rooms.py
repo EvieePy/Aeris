@@ -36,7 +36,7 @@ class Rooms(commands.Cog):
             if not id_:
                 return
 
-            room = self.bot.get_channel(int(await conn.get(id_)))
+            room = self.bot.get_channel(int(id_))
             if not room:
                 return
 
