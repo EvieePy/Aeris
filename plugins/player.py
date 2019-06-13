@@ -165,7 +165,7 @@ class Player(wavelink.Player):
                     except IndexError:
                         await asyncio.sleep(1)
         except asyncio.TimeoutError:
-            return
+            return await self.teardown()
 
         self.waiting = False
         self._current = track
