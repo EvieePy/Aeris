@@ -176,7 +176,9 @@ class Music(commands.Cog):
             await ctx.send(f'```ini\nAdded {track.title} to the Queue\n```', delete_after=15)
             player.queue.append(plugins.Track(track.id, track.info, ctx=ctx))
 
-        if not player.is_playing:
+        if not player.is_playing and not player._current:
+            await player._play_next()
+        elif not player.is_playing:
             await self.do_next(player)
 
     @commands.command()

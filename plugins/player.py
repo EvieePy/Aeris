@@ -141,6 +141,8 @@ class Player(wavelink.Player):
         self.repeat_votes = set()
         self.back_votes = set()
 
+        self._current = None
+
     async def _play_next(self):
 
         self.pause_votes.clear()
