@@ -32,7 +32,11 @@ class Rooms(commands.Cog):
             return
 
         async with self.room_cache.acquire() as conn:
-            room = self.bot.get_channel(int(await conn.get(member.guild.id)))
+            id_ = await conn.get(member.guild.id)
+            if not id_:
+                return
+
+            room = self.bot.get_channel(int(await conn.get(id_)))
             if not room:
                 return
 
