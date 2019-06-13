@@ -105,6 +105,11 @@ class Music(commands.Cog):
         if player.updating:
             return
 
+        ignored = ('vol_down', 'vol_up', 'queue', 'debug')
+        
+        if ctx.command.name in ignored:
+            return
+
         await player.invoke_session()
 
     async def cog_command_error(self, ctx: commands.Context, error: Exception):
