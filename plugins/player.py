@@ -142,6 +142,7 @@ class Player(wavelink.Player):
         self.back_votes = set()
 
         self._current = None
+        self.current = None
 
     async def _play_next(self):
 
@@ -251,6 +252,9 @@ class Player(wavelink.Player):
         await self.destroy_controller()
 
         del self.node.players[self.guild_id]
+
+    def is_playing(self):
+        return self.is_connected and self.current is not None
 
 
 class Track(wavelink.Track):

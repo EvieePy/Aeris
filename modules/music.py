@@ -39,6 +39,8 @@ class Music(commands.Cog):
         await self.do_next(event.player)
 
     async def do_next(self, player):
+        player.current = None
+
         if player._current.repeats:
             player._current.repeats -= 1
             player.index -= 1
@@ -106,7 +108,7 @@ class Music(commands.Cog):
             return
 
         ignored = ('vol_down', 'vol_up', 'queue', 'debug')
-        
+
         if ctx.command.name in ignored:
             return
 
@@ -184,7 +186,7 @@ class Music(commands.Cog):
 
         await asyncio.sleep(1)
 
-        if not player.is_playing:
+        if not player.is_playing():
             await player._play_next()
 
     @commands.command()
