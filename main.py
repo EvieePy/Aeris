@@ -16,6 +16,7 @@ class Bot(commands.Bot):
         self.session = None
 
         self.room_cache = redio.ConnectionPool('127.0.0.1', 6379, database=15)
+        self.todo_cache = redio.ConnectionPool('127.0.0.1', 6379, database=3)
 
     async def on_ready(self):
         print(f'Logged in: {self.user.name} | {self.user.id}')
@@ -32,3 +33,4 @@ class Bot(commands.Bot):
             self.load_extension(module)
 
         await self.room_cache.open()
+        await self.todo_cache.open()
