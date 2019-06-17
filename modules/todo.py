@@ -90,7 +90,7 @@ class Todo(commands.Cog):
 
     @commands.command()
     async def todos(self, ctx, *, member: discord.Member=None):
-        await ctx.invoke(self.todo_list, member)
+        await ctx.invoke(self.todo_list, member=member)
 
 
 def setup(bot):
